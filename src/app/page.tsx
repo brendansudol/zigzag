@@ -3,15 +3,25 @@
 import { useCompletion } from "ai/react"
 
 export default function Chat() {
-  const { completion, input, handleInputChange, handleSubmit } = useCompletion({
+  const { completion, handleSubmit } = useCompletion({
     api: "/api/completion",
+    body: {
+      game: {
+        color: "red",
+        ourWords: ["apple", "banana"],
+        opponentWords: ["carrot", "doughnut"],
+        neutralWords: ["elephant", "frog"],
+        assassinWord: "gorilla",
+      },
+    },
+    initialInput: "foo",
   })
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="prompt" value={input} onChange={handleInputChange} id="input" />
-      <button type="submit">Submit</button>
-      <div>{completion}</div>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <button type="submit">submit</button>
+      </form>
+    </>
   )
 }
