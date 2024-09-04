@@ -1,8 +1,19 @@
 import { openai } from "@ai-sdk/openai"
 import { generateText } from "ai"
 
+type Card = {
+  label: string
+  selected: boolean
+  word: string
+}
+
+type Game = {
+  turn: "red" | "blue"
+  board: Card[]
+}
+
 export async function POST(req: Request) {
-  const { game }: { game: any } = await req.json()
+  const { game }: { game: Game } = await req.json()
   const prompt = getPrompt(game)
 
   const { text: result } = await generateText({
@@ -19,8 +30,17 @@ You are an AI assistant specialized in the game Codenames, acting as a helpful c
 Your task is to generate clever, valid clues based on the given word sets. 
 `)
 
-function getPrompt(game: any): string {
-  const { color, ourWords, opponentWords, neutralWords, assassinWord } = game
+function getPrompt(game: Game): string {
+  const { turn, board } = game
+
+  const nextTurn = turn === "red" ? "blue" : "red"
+  const toWordList = (cards: Card[]) => cards.map((card) => card.word).join(", ")
+
+  const remainingCards = board.filter((card) => !card.selected)
+  const ourWords = remainingCards.filter((card) => card.label === turn)
+  const opponentWords = remainingCards.filter((card) => card.label === nextTurn)
+  const neutralWords = remainingCards.filter((card) => card.label === "bystander")
+  const assassinWord = remainingCards.find((card) => card.label === "assassin")?.word ?? "N/A"
 
   return formatString(`
     I'm playing Codenames with my friends. I'm the spymaster and I need your help to come up with a clue.
@@ -29,13 +49,13 @@ function getPrompt(game: any): string {
     words with each clue, while avoiding words belonging to the opponent, neutral words, and the
     game-ending assassin word.
 
-    We are the ${color} team.
+    We are the ${turn.toUpperCase()} team.
 
-    Our words: ${ourWords.join(", ")}
+    Our words: ${toWordList(ourWords)}
 
-    Opponent's words: ${opponentWords.join(", ")}
+    Opponent's words: ${toWordList(opponentWords)}
 
-    Neutral words: ${neutralWords.join(", ")}
+    Neutral words: ${toWordList(neutralWords)}
 
     Assassin word: ${assassinWord}
 

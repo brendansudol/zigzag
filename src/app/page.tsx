@@ -3,15 +3,17 @@
 import { useCompletion } from "ai/react"
 
 export default function Chat() {
-  const { completion, handleSubmit } = useCompletion({
+  const { handleSubmit } = useCompletion({
     api: "/api/completion",
     body: {
       game: {
-        color: "red",
-        ourWords: ["apple", "banana"],
-        opponentWords: ["carrot", "doughnut"],
-        neutralWords: ["elephant", "frog"],
-        assassinWord: "gorilla",
+        turn: "red",
+        board: [
+          { label: "red", selected: false, word: "foo" },
+          { label: "blue", selected: false, word: "bar" },
+          { label: "bystander", selected: false, word: "baz" },
+          { label: "assassin", selected: false, word: "qux" },
+        ],
       },
     },
     initialInput: "foo",
