@@ -59,8 +59,9 @@ function getPrompt(game: Game): string {
 
     Assassin word: ${assassinWord}
 
-    Please suggest a good one-word clue to give my team, followed by the number of words it relates to.
-    Then list the specific words from our team's list that your clue relates to.
+    Please suggest an ambitious one-word clue to give my team. Aim to connect as many of our words as
+    possible with a single, strategic clue. Provide the clue, followed by the number of words it
+    relates to. Then list the specific words from our team's list that your clue relates to.
     Finally, briefly explain your reasoning for choosing this clue.
 
     Your response should be in this format:
@@ -70,6 +71,12 @@ function getPrompt(game: Game): string {
     Related words: [WORD1], [WORD2], etc.
     
     Reasoning: [Brief explanation]
+
+    Important: Strive to connect 3 or more words if possible, while ensuring the connection remains
+    clear and strategic. In your reasoning, focus solely on why you chose this specific clue
+    and how it relates to the selected words. Do not mention avoiding opponent's words, neutral
+    words, or the assassin word, as this is assumed. Keep your explanation concise and directly
+    related to the chosen words and clue.
 `)
 }
 
