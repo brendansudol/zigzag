@@ -2,9 +2,9 @@
 
 import { useCompletion } from "ai/react"
 
-export default function Chat() {
+export default function Page() {
   const { handleSubmit } = useCompletion({
-    api: "/api/completion",
+    api: "/api/ai/codenames",
     body: {
       game: {
         turn: "red",
@@ -20,10 +20,8 @@ export default function Chat() {
   })
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <button type="submit">submit</button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit}>
+      <button type="submit">submit</button>
+    </form>
   )
 }
